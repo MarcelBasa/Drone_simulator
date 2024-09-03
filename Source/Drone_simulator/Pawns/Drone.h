@@ -6,6 +6,7 @@
 
 class USkeletalMeshComponent;
 class UCameraComponent;
+class UFloatingPawnMovement;
 
 UCLASS()
 class DRONE_SIMULATOR_API ADrone : public APawn
@@ -32,4 +33,12 @@ private:
 		USkeletalMeshComponent* DroneMesh = nullptr;
 	UPROPERTY(EditAnywhere)
 		UCameraComponent* Camera = nullptr;
+	UPROPERTY(EditAnywhere)
+		UFloatingPawnMovement* MovementComponent;
+
+	FVector TargetLocation;
+	bool bIsMovingToTarget;
+	float MovementSpeed = 500.f;  // Prêdkoœæ drona
+
+	void MoveToTarget(const FVector& Target);
 };
