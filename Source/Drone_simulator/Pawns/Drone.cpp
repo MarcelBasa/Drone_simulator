@@ -1,7 +1,7 @@
 #include "Drone.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SkeletalMeshComponent.h"
-
+#include "GameFramework/FloatingPawnMovement.h"
 
 ADrone::ADrone()
 {
@@ -14,18 +14,41 @@ ADrone::ADrone()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(RootComponent);
 	Camera->bUsePawnControlRotation = true;
+
+	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 }
 
 void ADrone::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	// DEBUG
+	MovementComponent->Deactivate();
+	MoveToTarget(FVector(0, -4000.f, 10000.f));
 }
 
 void ADrone::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bIsMovingToTarget)
+	{
+		FVector CurrentLocation = GetActorLocation();
+
+		// SprawdŸ, czy dron jest blisko celu, aby zatrzymaæ ruch
+		if (FVector::Dist(CurrentLocation, TargetLocation) <= 10.f)  // Tolerancja 10 jednostek
+		{
+			bIsMovingToTarget = false;
+			UE_LOG(LogTemp, Warning, TEXT("Pass"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Flying"));
+			// Interpolacja z równ¹ prêdkoœci¹
+			FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, MovementSpeed);
+			SetActorLocation(NewLocation);
+		}
+	}
 }
 
 void ADrone::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -66,4 +89,10 @@ void ADrone::Turn(float Value)
 void ADrone::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
+}
+
+void ADrone::MoveToTarget(const FVector& Target)
+{
+	TargetLocation = Target;
+	bIsMovingToTarget = true;
 }
