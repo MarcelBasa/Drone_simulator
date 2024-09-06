@@ -38,7 +38,7 @@ private:
 
 	FVector TargetLocation;
 	bool bIsMovingToTarget;
-	float MovementSpeed = 500.f;  // Prêdkoœæ drona
+	float MovementSpeed = 800.f;  // Prêdkoœæ drona
 
 	void MoveToTarget(const FVector& Target);
 };

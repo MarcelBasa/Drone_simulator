@@ -22,8 +22,9 @@ void ADrone::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// DEBUG
 	MovementComponent->Deactivate();
-	MoveToTarget(FVector(0, -1500.f, 2500.f));
+	MoveToTarget(FVector(0, -4000.f, 10000.f));
 }
 
 void ADrone::Tick(float DeltaTime)
