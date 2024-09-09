@@ -1,3 +1,3 @@
-# Drone_simulator (praca inżynierska)
+# Drone_simulator
 
 Developed with Unreal Engine 5
