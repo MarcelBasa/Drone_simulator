@@ -2,6 +2,8 @@
 #include "Camera/CameraComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
 
 ADrone::ADrone()
 {
@@ -22,6 +24,13 @@ void ADrone::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (FlySound)
+	{
+		UGameplayStatics::PlaySound2D(
+			GetWorld(),
+			FlySound
+		);
+	}
 	// DEBUG
 	MovementComponent->Deactivate();
 	MoveToTarget(FVector(0, -4000.f, 10000.f));

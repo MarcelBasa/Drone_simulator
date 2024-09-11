@@ -7,6 +7,7 @@
 class USkeletalMeshComponent;
 class UCameraComponent;
 class UFloatingPawnMovement;
+class USoundCue;
 
 UCLASS()
 class DRONE_SIMULATOR_API ADrone : public APawn
@@ -35,6 +36,8 @@ private:
 		UCameraComponent* Camera = nullptr;
 	UPROPERTY(EditAnywhere)
 		UFloatingPawnMovement* MovementComponent;
+	UPROPERTY(EditAnywhere)
+		USoundCue* FlySound;
 
 	FVector TargetLocation;
 	bool bIsMovingToTarget;
