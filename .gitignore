@@ -71,3 +71,4 @@ Intermediate/*
 Plugins/*/Intermediate/*
 
 Content/Maps/LIDAR_Szczecin/
+*.uasset
