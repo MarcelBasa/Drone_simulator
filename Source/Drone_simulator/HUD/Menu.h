@@ -27,5 +27,8 @@ protected:
 		void ChooseLidar();
 	UFUNCTION()
 		void ChooseOrtofotomapa();
+
+private:
+	APlayerController* PlayerController;
 	void LoadMap(FString mapName);
 };

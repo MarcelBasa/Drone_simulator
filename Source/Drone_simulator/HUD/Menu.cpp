@@ -9,11 +9,14 @@ void UMenu::NativeConstruct()
 	QuitButton->OnClicked.AddDynamic(this, &ThisClass::Quit);
 	LidarButton->OnClicked.AddDynamic(this, &ThisClass::ChooseLidar);
 	OrtofotomapaButton->OnClicked.AddDynamic(this, &ThisClass::ChooseOrtofotomapa);
+
+	PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (PlayerController)
+		PlayerController->bShowMouseCursor = true;
 }
 
 void UMenu::Quit()
 {
-	APlayerController* PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (PlayerController)
 		PlayerController->ConsoleCommand("quit");
 }
@@ -30,6 +33,9 @@ void UMenu::ChooseOrtofotomapa()
 
 void UMenu::LoadMap(FString mapName)
 {
+	if (PlayerController)
+		PlayerController->bShowMouseCursor = false;
+
 	FString mapPath = "D:/UE_5_projekty_D/Drone_simulator/Content/Maps/" + mapName;
 	UGameplayStatics::OpenLevel(GetWorld(), FName(mapPath));
 }
