@@ -4,6 +4,7 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
+#include "Drone_simulator/HUD/PauseMenu.h"
 
 ADrone::ADrone()
 {
@@ -52,7 +53,7 @@ void ADrone::Tick(float DeltaTime)
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Flying"));
+			//UE_LOG(LogTemp, Warning, TEXT("Flying"));
 			// Interpolacja z równ¹ prêdkoœci¹
 			FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, MovementSpeed);
 			SetActorLocation(NewLocation);
@@ -68,6 +69,7 @@ void ADrone::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ThisClass::MoveRight);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ThisClass::Turn);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ThisClass::LookUp);
+	PlayerInputComponent->BindAction(TEXT("Pause"), IE_Pressed, this, &ThisClass::Pause);
 }
 
 void ADrone::MoveForward(float Value)
@@ -104,4 +106,16 @@ void ADrone::MoveToTarget(const FVector& Target)
 {
 	TargetLocation = Target;
 	bIsMovingToTarget = true;
+}
+
+void ADrone::Pause()
+{
+	bGamePaused = !bGamePaused;
+	UE_LOG(LogTemp, Warning, TEXT("Game paused: %d"), bGamePaused);
+	
+	/*if (Controller && PauseMenuClass)
+	{
+		PasueMenuComponent = CreateWidget<UPauseMenu>(Controller, PauseMenuClass);
+		PasueMenuComponent->AddToViewport();
+	}*/
 }

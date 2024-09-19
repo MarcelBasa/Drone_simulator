@@ -8,6 +8,7 @@ class USkeletalMeshComponent;
 class UCameraComponent;
 class UFloatingPawnMovement;
 class USoundCue;
+class UPauseMenu;
 
 UCLASS()
 class DRONE_SIMULATOR_API ADrone : public APawn
@@ -35,13 +36,19 @@ private:
 	UPROPERTY(EditAnywhere)
 		UCameraComponent* Camera = nullptr;
 	UPROPERTY(EditAnywhere)
-		UFloatingPawnMovement* MovementComponent;
+		UFloatingPawnMovement* MovementComponent = nullptr;
 	UPROPERTY(EditAnywhere)
-		USoundCue* FlySound;
+		USoundCue* FlySound = nullptr;
 
 	FVector TargetLocation;
 	bool bIsMovingToTarget;
 	float MovementSpeed = 800.f;  // Prêdkoœæ drona
 
 	void MoveToTarget(const FVector& Target);
+
+	UPROPERTY(EditAnywhere)
+		class TSubclassOf<UPauseMenu> PauseMenuClass;
+	UPauseMenu* PasueMenuComponent = nullptr;
+	bool bGamePaused = false;
+	void Pause();
 };
