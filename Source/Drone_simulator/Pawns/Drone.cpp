@@ -4,7 +4,8 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
-#include "Drone_simulator/HUD/PauseMenu.h"
+#include "Drone_simulator/Controllers/DroneController.h"
+
 
 ADrone::ADrone()
 {
@@ -69,7 +70,7 @@ void ADrone::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ThisClass::MoveRight);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ThisClass::Turn);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ThisClass::LookUp);
-	PlayerInputComponent->BindAction(TEXT("Pause"), IE_Pressed, this, &ThisClass::Pause);
+	PlayerInputComponent->BindAction(TEXT("Pause"), IE_Pressed, this, &ThisClass::PauseButtonClick);
 }
 
 void ADrone::MoveForward(float Value)
@@ -108,14 +109,9 @@ void ADrone::MoveToTarget(const FVector& Target)
 	bIsMovingToTarget = true;
 }
 
-void ADrone::Pause()
+void ADrone::PauseButtonClick()
 {
-	bGamePaused = !bGamePaused;
-	UE_LOG(LogTemp, Warning, TEXT("Game paused: %d"), bGamePaused);
-	
-	/*if (Controller && PauseMenuClass)
-	{
-		PasueMenuComponent = CreateWidget<UPauseMenu>(Controller, PauseMenuClass);
-		PasueMenuComponent->AddToViewport();
-	}*/
+	DroneContoller = DroneContoller == nullptr ? Cast<ADroneController>(Controller) : DroneContoller;
+	if(DroneContoller)
+		DroneContoller->HandleSetPauseMenu();
 }

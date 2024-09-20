@@ -12,7 +12,21 @@ void UMenu::NativeConstruct()
 
 	PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (PlayerController)
+	{
+		PlayerController->SetInputMode(FInputModeUIOnly());
 		PlayerController->bShowMouseCursor = true;
+	}
+}
+
+void UMenu::NativeDestruct()
+{
+	Super::NativeDestruct();
+
+	if (PlayerController)
+	{
+		PlayerController->SetInputMode(FInputModeGameOnly());
+		PlayerController->bShowMouseCursor = false;
+	}
 }
 
 void UMenu::Quit()
@@ -33,9 +47,6 @@ void UMenu::ChooseOrtofotomapa()
 
 void UMenu::LoadMap(FString mapName)
 {
-	if (PlayerController)
-		PlayerController->bShowMouseCursor = false;
-
 	FString mapPath = "D:/UE_5_projekty_D/Drone_simulator/Content/Maps/" + mapName;
 	UGameplayStatics::OpenLevel(GetWorld(), FName(mapPath));
 }

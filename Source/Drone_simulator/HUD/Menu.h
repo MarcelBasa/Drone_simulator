@@ -5,6 +5,8 @@
 #include "Menu.generated.h"
 
 class UButton;
+class APlayerController;
+
 
 UCLASS()
 class DRONE_SIMULATOR_API UMenu : public UUserWidget
@@ -21,6 +23,7 @@ public:
 
 protected:
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 	UFUNCTION()
 		void Quit();
 	UFUNCTION()
@@ -29,6 +32,6 @@ protected:
 		void ChooseOrtofotomapa();
 
 private:
-	APlayerController* PlayerController;
+	APlayerController* PlayerController = nullptr;
 	void LoadMap(FString mapName);
 };

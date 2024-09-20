@@ -8,7 +8,7 @@ class USkeletalMeshComponent;
 class UCameraComponent;
 class UFloatingPawnMovement;
 class USoundCue;
-class UPauseMenu;
+class ADroneController;
 
 UCLASS()
 class DRONE_SIMULATOR_API ADrone : public APawn
@@ -46,9 +46,6 @@ private:
 
 	void MoveToTarget(const FVector& Target);
 
-	UPROPERTY(EditAnywhere)
-		class TSubclassOf<UPauseMenu> PauseMenuClass;
-	UPauseMenu* PasueMenuComponent = nullptr;
-	bool bGamePaused = false;
-	void Pause();
+	ADroneController* DroneContoller = nullptr;
+	void PauseButtonClick();
 };
