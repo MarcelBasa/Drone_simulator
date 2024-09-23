@@ -47,6 +47,6 @@ void UMenu::ChooseOrtofotomapa()
 
 void UMenu::LoadMap(FString mapName)
 {
-	FString mapPath = "D:/UE_5_projekty_D/Drone_simulator/Content/Maps/" + mapName;
-	UGameplayStatics::OpenLevel(GetWorld(), FName(mapPath));
+	FName mapPath = FName("D:/UE_5_projekty_D/Drone_simulator/Content/Maps/" + mapName);
+	UGameplayStatics::OpenLevel(GetWorld(), mapPath);
 }

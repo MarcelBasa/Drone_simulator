@@ -9,6 +9,7 @@ void UPauseMenu::NativeConstruct()
 
 	QuitButton->OnClicked.AddDynamic(this, &ThisClass::Quit);
 	ResumeButton->OnClicked.AddDynamic(this, &ThisClass::Resume);
+	BackToMenuButton->OnClicked.AddDynamic(this, &ThisClass::BackToMenu);
 
 	DroneController = Cast<ADroneController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (DroneController)
@@ -40,6 +41,12 @@ void UPauseMenu::Resume()
 {
 	if (DroneController)
 		DroneController->HandleSetPauseMenu();
+}
+
+void UPauseMenu::BackToMenu()
+{
+	FName mapPath = "D:/UE_5_projekty_D/Drone_simulator/Content/Maps/StartMap";
+	UGameplayStatics::OpenLevel(GetWorld(), mapPath);
 }
 
 void UPauseMenu::SetCursorCenter()
