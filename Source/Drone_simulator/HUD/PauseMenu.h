@@ -17,6 +17,8 @@ public:
 		UButton* QuitButton;
 	UPROPERTY(meta = (BindWidget))
 		UButton* ResumeButton;
+	UPROPERTY(meta = (BindWidget))
+		UButton* BackToMenuButton;
 
 protected:
 	virtual void NativeConstruct() override;
@@ -25,6 +27,8 @@ protected:
 		void Quit();
 	UFUNCTION()
 		void Resume();
+	UFUNCTION()
+		void BackToMenu();
 
 private:
 	ADroneController* DroneController = nullptr;
