@@ -1,5 +1,6 @@
 #include "Drone.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Sound/SoundCue.h"
@@ -10,6 +11,9 @@
 ADrone::ADrone()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultRoot"));
+	SetRootComponent(DefaultRoot);
 
 	DroneMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Drone mesh"));
 	DroneMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -30,6 +34,7 @@ ADrone::ADrone()
 	Wing4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wing 4 mesh"));
 	Wing4->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Wing4->SetupAttachment(DroneMesh);
+	
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(RootComponent);
@@ -50,7 +55,7 @@ void ADrone::BeginPlay()
 		);
 	}
 	// DEBUG
-	//MovementComponent->Deactivate();
+	MovementComponent->Deactivate();
 	//MoveToTarget(FVector(0, -4000.f, 10000.f));
 }
 
