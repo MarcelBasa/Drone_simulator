@@ -4,7 +4,7 @@
 #include "GameFramework/Pawn.h"
 #include "Drone.generated.h"
 
-class USkeletalMeshComponent;
+class UStaticMeshComponent;
 class UCameraComponent;
 class UFloatingPawnMovement;
 class USoundCue;
@@ -32,7 +32,16 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere)
-		USkeletalMeshComponent* DroneMesh = nullptr;
+		UStaticMeshComponent* DroneMesh = nullptr;
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* Wing1 = nullptr;
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* Wing2 = nullptr;
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* Wing3 = nullptr;
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* Wing4 = nullptr;
+
 	UPROPERTY(EditAnywhere)
 		UCameraComponent* Camera = nullptr;
 	UPROPERTY(EditAnywhere)

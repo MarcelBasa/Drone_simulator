@@ -1,6 +1,6 @@
 #include "Drone.h"
 #include "Camera/CameraComponent.h"
-#include "Components/SkeletalMeshComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
@@ -11,9 +11,25 @@ ADrone::ADrone()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	DroneMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Drone mesh"));
+	DroneMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Drone mesh"));
 	DroneMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	RootComponent = DroneMesh;
+	DroneMesh->SetupAttachment(RootComponent);
+
+	Wing1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wing 1 mesh"));
+	Wing1->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Wing1->SetupAttachment(DroneMesh);
+
+	Wing2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wing 2 mesh"));
+	Wing2->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Wing2->SetupAttachment(DroneMesh);
+
+	Wing3 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wing 3 mesh"));
+	Wing3->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Wing3->SetupAttachment(DroneMesh);
+
+	Wing4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wing 4 mesh"));
+	Wing4->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Wing4->SetupAttachment(DroneMesh);
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(RootComponent);
@@ -34,8 +50,8 @@ void ADrone::BeginPlay()
 		);
 	}
 	// DEBUG
-	MovementComponent->Deactivate();
-	MoveToTarget(FVector(0, -4000.f, 10000.f));
+	//MovementComponent->Deactivate();
+	//MoveToTarget(FVector(0, -4000.f, 10000.f));
 }
 
 void ADrone::Tick(float DeltaTime)
