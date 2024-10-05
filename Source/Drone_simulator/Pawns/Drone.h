@@ -4,7 +4,8 @@
 #include "GameFramework/Pawn.h"
 #include "Drone.generated.h"
 
-class USkeletalMeshComponent;
+class USceneComponent;
+class UStaticMeshComponent;
 class UCameraComponent;
 class UFloatingPawnMovement;
 class USoundCue;
@@ -17,6 +18,17 @@ class DRONE_SIMULATOR_API ADrone : public APawn
 
 public:
 	ADrone();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* DroneMesh = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* Wing1 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* Wing2 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* Wing3 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* Wing4 = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
@@ -32,7 +44,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere)
-		USkeletalMeshComponent* DroneMesh = nullptr;
+		USceneComponent* DefaultRoot = nullptr;
 	UPROPERTY(EditAnywhere)
 		UCameraComponent* Camera = nullptr;
 	UPROPERTY(EditAnywhere)
