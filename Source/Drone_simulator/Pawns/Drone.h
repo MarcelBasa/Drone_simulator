@@ -19,6 +19,17 @@ class DRONE_SIMULATOR_API ADrone : public APawn
 public:
 	ADrone();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* DroneMesh = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* Wing1 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* Wing2 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* Wing3 = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* Wing4 = nullptr;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -34,19 +45,6 @@ public:
 private:
 	UPROPERTY(EditAnywhere)
 		USceneComponent* DefaultRoot = nullptr;
-	
-	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* DroneMesh = nullptr;
-	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* Wing1 = nullptr;
-	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* Wing2 = nullptr;
-	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* Wing3 = nullptr;
-	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* Wing4 = nullptr;
-	
-
 	UPROPERTY(EditAnywhere)
 		UCameraComponent* Camera = nullptr;
 	UPROPERTY(EditAnywhere)

@@ -55,7 +55,7 @@ void ADrone::BeginPlay()
 		);
 	}
 	// DEBUG
-	MovementComponent->Deactivate();
+	//MovementComponent->Deactivate();
 	//MoveToTarget(FVector(0, -4000.f, 10000.f));
 }
 

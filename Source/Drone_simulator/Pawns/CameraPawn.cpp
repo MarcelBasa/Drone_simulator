@@ -13,7 +13,7 @@ void ACameraPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//SetActorRotation(FRotator(35, 0, 0));
+	SetActorRotation(FRotator(35, 0, 0));
 }
 
 void ACameraPawn::Tick(float DeltaTime)
