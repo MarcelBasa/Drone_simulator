@@ -143,4 +143,6 @@ void ADrone::PauseButtonClick()
 	DroneContoller = DroneContoller == nullptr ? Cast<ADroneController>(Controller) : DroneContoller;
 	if(DroneContoller)
 		DroneContoller->HandleSetPauseMenu();
+
+	//UStaticMesh* MeshAsset = LoadObject<UStaticMesh>(nullptr, TEXT("StaticMesh'/Game/Path/To/YourMesh.YourMesh'"));
 }
