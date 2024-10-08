@@ -15,7 +15,9 @@ public class Drone_simulator : ModuleRules
 			"Engine", 
 			"InputCore", 
 			"EnhancedInput",
-			"UMG" 
+			"UMG",
+			"UnrealEd", 
+			"AssetTools"
 			});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

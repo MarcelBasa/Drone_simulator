@@ -7,6 +7,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Drone_simulator/Controllers/DroneController.h"
 #include "Components/TimelineComponent.h"
+#include "AutomatedAssetImportData.h"
+#include "AssetToolsModule.h"
 
 ADrone::ADrone()
 {
@@ -144,5 +146,18 @@ void ADrone::PauseButtonClick()
 	if(DroneContoller)
 		DroneContoller->HandleSetPauseMenu();
 
-	//UStaticMesh* MeshAsset = LoadObject<UStaticMesh>(nullptr, TEXT("StaticMesh'/Game/Path/To/YourMesh.YourMesh'"));
+	
+	TArray<FString> filesToImport;
+	FString srcPath = TEXT("C:/Users/Marcelo/Desktop/Szczecin.laz");
+	srcPath = srcPath.Replace(TEXT("\\"), TEXT("/"));
+	filesToImport.Add(srcPath);
+
+	UAutomatedAssetImportData* importData = NewObject<UAutomatedAssetImportData>();
+	importData->bReplaceExisting = true;
+	importData->DestinationPath = TEXT("/Game/DynamicImportFiles");
+	importData->Filenames = filesToImport;
+
+	FAssetToolsModule& AssetToolsModule = FModuleManager::GetModuleChecked<FAssetToolsModule>("AssetTools");
+	auto importedAssets = AssetToolsModule.Get().ImportAssetsAutomated(importData);
+	
 }
