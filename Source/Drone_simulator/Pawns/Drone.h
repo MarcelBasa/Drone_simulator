@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/TimelineComponent.h"
 #include "GameFramework/Pawn.h"
 #include "Drone.generated.h"
 
@@ -10,6 +11,7 @@ class UCameraComponent;
 class UFloatingPawnMovement;
 class USoundCue;
 class ADroneController;
+class UCurveFloat;
 
 UCLASS()
 class DRONE_SIMULATOR_API ADrone : public APawn
@@ -30,6 +32,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* Wing4 = nullptr;
 
+	UFUNCTION()
+		void TimelineProgress(float Value);
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -37,6 +42,7 @@ protected:
 	void MoveRight(float Value);
 	void Turn(float Value);
 	void LookUp(float Value);
+	void Zoom(float Value);
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -52,11 +58,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		USoundCue* FlySound = nullptr;
 
-	FVector TargetLocation;
-	bool bIsMovingToTarget;
-	float MovementSpeed = 800.f;  // Prêdkoœæ drona
-
-	void MoveToTarget(const FVector& Target);
+	FTimeline CurveTimeline;
+	UPROPERTY(EditAnywhere)
+		UCurveFloat* CurveFloat;
 
 	ADroneController* DroneContoller = nullptr;
 	void PauseButtonClick();

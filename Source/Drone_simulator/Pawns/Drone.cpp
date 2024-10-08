@@ -6,7 +6,9 @@
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
 #include "Drone_simulator/Controllers/DroneController.h"
-
+#include "Components/TimelineComponent.h"
+#include "AutomatedAssetImportData.h"
+#include "AssetToolsModule.h"
 
 ADrone::ADrone()
 {
@@ -43,6 +45,15 @@ ADrone::ADrone()
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 }
 
+void ADrone::TimelineProgress(float Value)
+{
+	if (Camera)
+	{
+		float newFieldOfView = FMath::Lerp(30, 90, Value);
+		Camera->SetFieldOfView(newFieldOfView);
+	}
+}
+
 void ADrone::BeginPlay()
 {
 	Super::BeginPlay();
@@ -54,33 +65,19 @@ void ADrone::BeginPlay()
 			FlySound
 		);
 	}
-	// DEBUG
-	//MovementComponent->Deactivate();
-	//MoveToTarget(FVector(0, -4000.f, 10000.f));
+	if (CurveFloat)
+	{
+		FOnTimelineFloat TimeLineProgress;
+		TimeLineProgress.BindUFunction(this, FName("TimelineProgress"));
+		CurveTimeline.AddInterpFloat(CurveFloat, TimeLineProgress);
+	}
 }
 
 void ADrone::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bIsMovingToTarget)
-	{
-		FVector CurrentLocation = GetActorLocation();
-
-		// SprawdŸ, czy dron jest blisko celu, aby zatrzymaæ ruch
-		if (FVector::Dist(CurrentLocation, TargetLocation) <= 10.f)  // Tolerancja 10 jednostek
-		{
-			bIsMovingToTarget = false;
-			UE_LOG(LogTemp, Warning, TEXT("Pass"));
-		}
-		else
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("Flying"));
-			// Interpolacja z równ¹ prêdkoœci¹
-			FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, MovementSpeed);
-			SetActorLocation(NewLocation);
-		}
-	}
+	CurveTimeline.TickTimeline(DeltaTime);
 }
 
 void ADrone::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -91,6 +88,7 @@ void ADrone::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ThisClass::MoveRight);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ThisClass::Turn);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ThisClass::LookUp);
+	PlayerInputComponent->BindAxis(TEXT("Zoom"), this, &ThisClass::Zoom);
 	PlayerInputComponent->BindAction(TEXT("Pause"), IE_Pressed, this, &ThisClass::PauseButtonClick);
 }
 
@@ -124,10 +122,22 @@ void ADrone::LookUp(float Value)
 	AddControllerPitchInput(Value);
 }
 
-void ADrone::MoveToTarget(const FVector& Target)
+void ADrone::Zoom(float Value)
 {
-	TargetLocation = Target;
-	bIsMovingToTarget = true;
+	if (Value > 0)
+	{
+		if (CurveTimeline.IsPlaying() == false || CurveTimeline.IsReversing())
+		{
+			CurveTimeline.Play();
+		}
+	}
+	else if (Value < 0)
+	{
+		if (CurveTimeline.IsPlaying() == false || !CurveTimeline.IsReversing())
+		{
+			CurveTimeline.Reverse();
+		}
+	}
 }
 
 void ADrone::PauseButtonClick()
@@ -135,4 +145,19 @@ void ADrone::PauseButtonClick()
 	DroneContoller = DroneContoller == nullptr ? Cast<ADroneController>(Controller) : DroneContoller;
 	if(DroneContoller)
 		DroneContoller->HandleSetPauseMenu();
+
+	
+	TArray<FString> filesToImport;
+	FString srcPath = TEXT("C:/Users/Marcelo/Desktop/Szczecin.laz");
+	srcPath = srcPath.Replace(TEXT("\\"), TEXT("/"));
+	filesToImport.Add(srcPath);
+
+	UAutomatedAssetImportData* importData = NewObject<UAutomatedAssetImportData>();
+	importData->bReplaceExisting = true;
+	importData->DestinationPath = TEXT("/Game/DynamicImportFiles");
+	importData->Filenames = filesToImport;
+
+	FAssetToolsModule& AssetToolsModule = FModuleManager::GetModuleChecked<FAssetToolsModule>("AssetTools");
+	auto importedAssets = AssetToolsModule.Get().ImportAssetsAutomated(importData);
+	
 }
