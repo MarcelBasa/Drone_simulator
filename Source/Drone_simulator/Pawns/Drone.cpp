@@ -9,6 +9,9 @@
 #include "Components/TimelineComponent.h"
 #include "AutomatedAssetImportData.h"
 #include "AssetToolsModule.h"
+#include "LiDARPointCloudComponent.h"
+#include "LiDARPointCloud.h"  // Zale¿noœci dla LiDAR Point Cloud
+//#include "EditorAssetLibrary.h"
 
 ADrone::ADrone()
 {
@@ -146,18 +149,64 @@ void ADrone::PauseButtonClick()
 	if(DroneContoller)
 		DroneContoller->HandleSetPauseMenu();
 
-	
-	TArray<FString> filesToImport;
-	FString srcPath = TEXT("C:/Users/Marcelo/Desktop/Szczecin.laz");
-	srcPath = srcPath.Replace(TEXT("\\"), TEXT("/"));
+	/*TArray<FString> filesToImport;
+	FString srcPath = TEXT("C:/Users/Marcelo/Desktop/szczecin.laz");
+	srcPath = srcPath.Replace(TEXT("\\"), TEXT("/"));  // Zast¹p backslashe slashem
 	filesToImport.Add(srcPath);
 
+	// Utworzenie danych importu
 	UAutomatedAssetImportData* importData = NewObject<UAutomatedAssetImportData>();
 	importData->bReplaceExisting = true;
-	importData->DestinationPath = TEXT("/Game/DynamicImportFiles");
+	importData->DestinationPath = TEXT("/Game/DynamicImportFiles");  // Œcie¿ka do folderu w projekcie UE
 	importData->Filenames = filesToImport;
 
+	// Przeprowadzenie automatycznego importu
 	FAssetToolsModule& AssetToolsModule = FModuleManager::GetModuleChecked<FAssetToolsModule>("AssetTools");
-	auto importedAssets = AssetToolsModule.Get().ImportAssetsAutomated(importData);
-	
+	TArray<UObject*> importedAssets = AssetToolsModule.Get().ImportAssetsAutomated(importData);
+
+	// Sprawdzenie, czy import siê uda³ i przetworzenie zaimportowanych zasobów
+	if (importedAssets.Num() > 0)
+	{
+		for (UObject* ImportedAsset : importedAssets)
+		{
+			if (ImportedAsset)
+			{
+				// Sprawdzanie, czy zaimportowano LiDAR Point Cloud
+				ULidarPointCloud* LidarPointCloud = Cast<ULidarPointCloud>(ImportedAsset);
+				if (LidarPointCloud)
+				{
+					// Pobranie aktualnego œwiata gry
+					UWorld* World = GEngine->GetWorldFromContextObject(GetTransientPackage(), EGetWorldErrorMode::LogAndReturnNull);
+					if (World)
+					{
+						// Definicja lokalizacji, rotacji i skali spawnowanego obiektu
+						FVector Location = FVector(0.0f, 0.0f, 100.0f);  // Pozycja spawnowanego obiektu
+						FRotator Rotation = FRotator::ZeroRotator;  // Bez rotacji
+						FActorSpawnParameters SpawnParams;
+
+						// Spawnowanie aktora i dodanie komponentu LiDAR Point Cloud
+						AActor* SpawnedActor = World->SpawnActor<AActor>(AActor::StaticClass(), Location, Rotation, SpawnParams);
+						if (SpawnedActor)
+						{
+							// Dodanie komponentu LiDAR Point Cloud do aktora
+							ULidarPointCloudComponent* LidarComponent = NewObject<ULidarPointCloudComponent>(SpawnedActor);
+							if (LidarComponent)
+							{
+								LidarComponent->SetPointCloud(LidarPointCloud);
+								LidarComponent->RegisterComponent();  // Zarejestrowanie komponentu
+								LidarComponent->AttachToComponent(SpawnedActor->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+							}
+
+							// Mo¿liwoœæ ustawienia skali obiektu
+							SpawnedActor->SetActorScale3D(FVector(1.0f));
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Import failed or no assets imported."));
+	}*/
 }
