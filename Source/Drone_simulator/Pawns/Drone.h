@@ -62,6 +62,10 @@ private:
 	UPROPERTY(EditAnywhere)
 		UCurveFloat* CurveFloat;
 
+	class ULidarPointCloudComponent* LidarPointCloudComponent;
+
 	ADroneController* DroneContoller = nullptr;
 	void PauseButtonClick();
+
+	void LoadLidarPointCloud(const FString& FilePath);
 };

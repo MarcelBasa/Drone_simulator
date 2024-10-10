@@ -7,8 +7,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Drone_simulator/Controllers/DroneController.h"
 #include "Components/TimelineComponent.h"
-#include "AutomatedAssetImportData.h"
-#include "AssetToolsModule.h"
+#include "LidarPointCloudComponent.h"
+#include "LidarPointCloud.h"
 
 ADrone::ADrone()
 {
@@ -28,7 +28,7 @@ ADrone::ADrone()
 	Wing2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wing 2 mesh"));
 	Wing2->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Wing2->SetupAttachment(DroneMesh);
-
+	
 	Wing3 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wing 3 mesh"));
 	Wing3->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Wing3->SetupAttachment(DroneMesh);
@@ -42,7 +42,33 @@ ADrone::ADrone()
 	Camera->SetupAttachment(RootComponent);
 	Camera->bUsePawnControlRotation = true;
 
+	LidarPointCloudComponent = CreateDefaultSubobject<ULidarPointCloudComponent>(TEXT("LidarPointCloudComponent"));
+	LidarPointCloudComponent->SetupAttachment(RootComponent);
+
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
+}
+
+void ADrone::LoadLidarPointCloud(const FString& FilePath)
+{
+	if (!FPaths::FileExists(FilePath))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Lidar file not found: %s"), *FilePath);
+		return;
+	}
+
+	// Create a Lidar Point Cloud object from the file
+	ULidarPointCloud* LoadedPointCloud = ULidarPointCloud::CreateFromFile(FilePath); // The second parameter determines if loading is asynchronous
+
+	if (LoadedPointCloud)
+	{
+		// Set the Lidar Point Cloud to the LidarPointCloudComponent
+		LidarPointCloudComponent->SetPointCloud(LoadedPointCloud);
+		UE_LOG(LogTemp, Log, TEXT("Lidar Point Cloud successfully loaded and set."));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to load Lidar Point Cloud from file: %s"), *FilePath);
+	}
 }
 
 void ADrone::TimelineProgress(float Value)
@@ -71,6 +97,9 @@ void ADrone::BeginPlay()
 		TimeLineProgress.BindUFunction(this, FName("TimelineProgress"));
 		CurveTimeline.AddInterpFloat(CurveFloat, TimeLineProgress);
 	}
+
+	FString LidarFilePath = TEXT("C:/Users/Marcelo/Desktop/szczecin.laz");
+	LoadLidarPointCloud(LidarFilePath);
 }
 
 void ADrone::Tick(float DeltaTime)
@@ -145,19 +174,4 @@ void ADrone::PauseButtonClick()
 	DroneContoller = DroneContoller == nullptr ? Cast<ADroneController>(Controller) : DroneContoller;
 	if(DroneContoller)
 		DroneContoller->HandleSetPauseMenu();
-
-	
-	TArray<FString> filesToImport;
-	FString srcPath = TEXT("C:/Users/Marcelo/Desktop/Szczecin.laz");
-	srcPath = srcPath.Replace(TEXT("\\"), TEXT("/"));
-	filesToImport.Add(srcPath);
-
-	UAutomatedAssetImportData* importData = NewObject<UAutomatedAssetImportData>();
-	importData->bReplaceExisting = true;
-	importData->DestinationPath = TEXT("/Game/DynamicImportFiles");
-	importData->Filenames = filesToImport;
-
-	FAssetToolsModule& AssetToolsModule = FModuleManager::GetModuleChecked<FAssetToolsModule>("AssetTools");
-	auto importedAssets = AssetToolsModule.Get().ImportAssetsAutomated(importData);
-	
 }
