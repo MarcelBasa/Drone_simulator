@@ -6,7 +6,7 @@
 
 class UButton;
 class APlayerController;
-
+class ULidarPointCloudComponent;
 
 UCLASS()
 class DRONE_SIMULATOR_API UMenu : public UUserWidget
@@ -34,4 +34,5 @@ protected:
 private:
 	APlayerController* PlayerController = nullptr;
 	void LoadMap(FString mapName);
+
 };
