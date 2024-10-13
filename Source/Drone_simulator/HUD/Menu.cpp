@@ -1,6 +1,7 @@
 #include "Menu.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
+#include "Drone_simulator/Controllers/DroneController.h"
 
 
 void UMenu::NativeConstruct()
@@ -11,34 +12,24 @@ void UMenu::NativeConstruct()
 	LidarButton->OnClicked.AddDynamic(this, &ThisClass::ChooseLidar);
 	OrtofotomapaButton->OnClicked.AddDynamic(this, &ThisClass::ChooseOrtofotomapa);
 
-	PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (PlayerController)
+	DroneController = Cast<ADroneController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (DroneController)
 	{
-		PlayerController->SetInputMode(FInputModeUIOnly());
-		PlayerController->bShowMouseCursor = true;
-	}
-}
-
-void UMenu::NativeDestruct()
-{
-	Super::NativeDestruct();
-
-	if (PlayerController)
-	{
-		PlayerController->SetInputMode(FInputModeGameOnly());
-		PlayerController->bShowMouseCursor = false;
+		DroneController->SetInputMode(FInputModeUIOnly());
+		DroneController->bShowMouseCursor = true;
 	}
 }
 
 void UMenu::Quit()
 {
-	if (PlayerController)
-		PlayerController->ConsoleCommand("quit");
+	if (DroneController)
+		DroneController->ConsoleCommand("quit");
 }
 
 void UMenu::ChooseLidar()
 {
-	LoadMap("Szczecin_LIDAR.umap");
+	if (DroneController)
+		DroneController->HandleSetLidarMenu();
 }
 
 void UMenu::ChooseOrtofotomapa()

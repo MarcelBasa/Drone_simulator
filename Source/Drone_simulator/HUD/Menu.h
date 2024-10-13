@@ -5,7 +5,7 @@
 #include "Menu.generated.h"
 
 class UButton;
-class APlayerController;
+class ADroneController;
 class ULidarPointCloudComponent;
 
 UCLASS()
@@ -23,7 +23,6 @@ public:
 
 protected:
 	virtual void NativeConstruct() override;
-	virtual void NativeDestruct() override;
 	UFUNCTION()
 		void Quit();
 	UFUNCTION()
@@ -32,7 +31,7 @@ protected:
 		void ChooseOrtofotomapa();
 
 private:
-	APlayerController* PlayerController = nullptr;
+	ADroneController* DroneController = nullptr;
 	void LoadMap(FString mapName);
 
 };
