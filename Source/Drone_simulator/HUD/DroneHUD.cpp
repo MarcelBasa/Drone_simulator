@@ -1,14 +1,14 @@
 #include "DroneHUD.h"
-#include "Drone_simulator/HUD/PauseMenu.h"
+#include "Blueprint/UserWidget.h"
 
 
 void ADroneHUD::SetPauseMenu()
 {
 	bIsGamePaused = !bIsGamePaused;
-	if (bIsGamePaused)
+	if (bIsGamePaused && PauseMenuClass)
 	{
 		DisableInput(GetOwningPlayerController());
-		PauseMenuComponent = CreateWidget<UPauseMenu>(GetOwningPlayerController(), PauseMenuClass);
+		PauseMenuComponent = CreateWidget<UUserWidget>(GetOwningPlayerController(), PauseMenuClass);
 		PauseMenuComponent->AddToViewport();
 	}
 	else 
@@ -18,5 +18,29 @@ void ADroneHUD::SetPauseMenu()
 			PauseMenuComponent->RemoveFromParent();
 			PauseMenuComponent = nullptr;
 		}
+	}
+}
+
+void ADroneHUD::SetLidarMenu()
+{
+	if (MenuComponent)
+		MenuComponent->RemoveFromParent();
+
+	if (LidarMenuClass)
+	{
+		LidarMenuComponent = CreateWidget<UUserWidget>(GetOwningPlayerController(), LidarMenuClass);
+		LidarMenuComponent->AddToViewport();
+	}
+}
+
+void ADroneHUD::SetMenu()
+{
+	if (LidarMenuComponent)
+		LidarMenuComponent->RemoveFromParent();
+
+	if (MenuClass)
+	{
+		MenuComponent = CreateWidget<UUserWidget>(GetOwningPlayerController(), MenuClass);
+		MenuComponent->AddToViewport();
 	}
 }

@@ -13,18 +13,16 @@ class DRONE_SIMULATOR_API ADroneGameMode : public AGameMode
 	
 public:
 	ADroneGameMode();
+	void LoadLidarPointCloud(const FString& FilePath);
 
 protected:
 	virtual void BeginPlay() override;
 
 private:
-
 	UPROPERTY(Editanywhere)
 		TSubclassOf<UUserWidget> LoadingScreenClass;
 	UUserWidget* LoadingScreenComp;
 
-	void LoadLidarPointCloud(const FString& FilePath);
-	FString OpenFileDialog();
 	void TimerFinish();
 
 };

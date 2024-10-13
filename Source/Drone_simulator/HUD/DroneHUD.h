@@ -4,7 +4,7 @@
 #include "GameFramework/HUD.h"
 #include "DroneHUD.generated.h"
 
-class UPauseMenu;
+class UUserWidget;
 
 UCLASS()
 class DRONE_SIMULATOR_API ADroneHUD : public AHUD
@@ -13,10 +13,20 @@ class DRONE_SIMULATOR_API ADroneHUD : public AHUD
 	
 public:
 	void SetPauseMenu();
+	void SetLidarMenu();
+	void SetMenu();
 
 private:
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<UPauseMenu> PauseMenuClass;
-	UPauseMenu* PauseMenuComponent = nullptr;
+		TSubclassOf<UUserWidget> PauseMenuClass;
+	UUserWidget* PauseMenuComponent = nullptr;
 	bool bIsGamePaused = false;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UUserWidget> MenuClass;
+	UUserWidget* MenuComponent = nullptr;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UUserWidget> LidarMenuClass;
+	UUserWidget* LidarMenuComponent = nullptr;
 };
