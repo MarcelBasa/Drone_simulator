@@ -8,6 +8,7 @@
 #include <commdlg.h>
 #include "LidarPointCloudActor.h" 
 #include "Drone_simulator/Controllers/DroneController.h"
+#include "Drone_simulator/GameInstance/DroneGameInstance.h"
 
 
 void ULIDARMenu::NativeConstruct()
@@ -40,8 +41,14 @@ void ULIDARMenu::ChooseFile()
 
 		if (SelectedFilePath.EndsWith(TEXT(".las")) || SelectedFilePath.EndsWith(TEXT(".laz")))
 		{
-			ChosenFileText->SetText(FText::FromString(SelectedFilePath));
-			ChosenFileText->SetColorAndOpacity(FLinearColor::Green);
+			DroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+			if (DroneGameInstance)
+			{
+				DroneGameInstance->SetFilePath(SelectedFilePath);
+
+				ChosenFileText->SetText(FText::FromString(SelectedFilePath));
+				ChosenFileText->SetColorAndOpacity(FLinearColor::Green);
+			}
 		}
 		else
 		{
@@ -57,6 +64,12 @@ void ULIDARMenu::ChooseFile()
 
 void ULIDARMenu::RunMap()
 {
+	DroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (!DroneGameInstance || DroneGameInstance->GetFilePath().IsEmpty())
+	{
+		return;
+	}
+	
 	if (DroneController)
 	{
 		DroneController->SetInputMode(FInputModeGameOnly());
