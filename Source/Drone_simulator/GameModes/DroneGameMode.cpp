@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <commdlg.h>
 #include "LidarPointCloudActor.h" 
+#include "Blueprint/UserWidget.h"
 
 
 ADroneGameMode::ADroneGameMode() 
@@ -17,6 +18,21 @@ void ADroneGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (LoadingScreenClass)
+	{
+		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+		if (PlayerController)
+		{
+			LoadingScreenComp = CreateWidget<UUserWidget>(PlayerController, LoadingScreenClass);
+			if (LoadingScreenComp)
+			{
+				LoadingScreenComp->AddToViewport();
+
+				FTimerHandle LoadingScreenTimer;
+				GetWorldTimerManager().SetTimer(LoadingScreenTimer, this, &ThisClass::TimerFinish, 6.f);
+			}	
+		}
+	}
 
 	FString SelectedFilePath = OpenFileDialog();
 	if (!SelectedFilePath.IsEmpty())
@@ -28,6 +44,12 @@ void ADroneGameMode::BeginPlay()
 	{
 		UE_LOG(LogTemp, Log, TEXT("Nie wybrano pliku."));
 	}
+}
+
+void ADroneGameMode::TimerFinish()
+{
+	if (LoadingScreenComp)
+		LoadingScreenComp->RemoveFromParent();
 }
 
 FString ADroneGameMode::OpenFileDialog()
