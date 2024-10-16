@@ -18,8 +18,6 @@ public:
 		UButton* QuitButton;
 	UPROPERTY(meta = (BindWidget))
 		UButton* LidarButton;
-	UPROPERTY(meta = (BindWidget))
-		UButton* OrtofotomapaButton;
 
 protected:
 	virtual void NativeConstruct() override;
@@ -27,11 +25,8 @@ protected:
 		void Quit();
 	UFUNCTION()
 		void ChooseLidar();
-	UFUNCTION()
-		void ChooseOrtofotomapa();
 
 private:
 	ADroneController* DroneController = nullptr;
-	void LoadMap(FString mapName);
 
 };

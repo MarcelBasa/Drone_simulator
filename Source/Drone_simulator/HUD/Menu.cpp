@@ -10,7 +10,6 @@ void UMenu::NativeConstruct()
 
 	QuitButton->OnClicked.AddDynamic(this, &ThisClass::Quit);
 	LidarButton->OnClicked.AddDynamic(this, &ThisClass::ChooseLidar);
-	OrtofotomapaButton->OnClicked.AddDynamic(this, &ThisClass::ChooseOrtofotomapa);
 
 	DroneController = Cast<ADroneController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (DroneController)
@@ -31,15 +30,3 @@ void UMenu::ChooseLidar()
 	if (DroneController)
 		DroneController->HandleSetLidarMenu();
 }
-
-void UMenu::ChooseOrtofotomapa()
-{
-	LoadMap("Szczecin_Ortofotomapa.umap");
-}
-
-void UMenu::LoadMap(FString mapName)
-{
-	FName mapPath = FName("D:/UE_5_projekty_D/Drone_simulator/Content/Maps/" + mapName);
-	UGameplayStatics::OpenLevel(GetWorld(), mapPath);
-}
-

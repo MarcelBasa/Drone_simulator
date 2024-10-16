@@ -7,6 +7,7 @@
 class UButton;
 class UTextBlock;
 class ADroneController;
+class UDroneGameInstance;
 
 UCLASS()
 class DRONE_SIMULATOR_API ULIDARMenu : public UUserWidget
@@ -33,7 +34,8 @@ protected:
 		void RunMap();
 
 private:
-	ADroneController* DroneController;
+	UDroneGameInstance* DroneGameInstance = nullptr;
+	ADroneController* DroneController = nullptr;
 	FString SelectedFilePath;
 
 	FString OpenFileDialog();

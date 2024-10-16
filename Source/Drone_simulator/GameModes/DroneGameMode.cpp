@@ -6,6 +6,7 @@
 #include <commdlg.h>
 #include "LidarPointCloudActor.h" 
 #include "Blueprint/UserWidget.h"
+#include "Drone_simulator/GameInstance/DroneGameInstance.h"
 
 
 ADroneGameMode::ADroneGameMode() 
@@ -32,6 +33,12 @@ void ADroneGameMode::BeginPlay()
 				GetWorldTimerManager().SetTimer(LoadingScreenTimer, this, &ThisClass::TimerFinish, 6.f);
 			}	
 		}
+	}
+	
+	UDroneGameInstance* ADroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (ADroneGameInstance)
+	{
+		LoadLidarPointCloud(ADroneGameInstance->GetFilePath());
 	}
 }
 
