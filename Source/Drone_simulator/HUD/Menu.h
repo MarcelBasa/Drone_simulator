@@ -18,6 +18,8 @@ public:
 		UButton* QuitButton;
 	UPROPERTY(meta = (BindWidget))
 		UButton* LidarButton;
+	UPROPERTY(meta = (BindWidget))
+		UButton* CameraButton;
 
 protected:
 	virtual void NativeConstruct() override;
@@ -25,6 +27,8 @@ protected:
 		void Quit();
 	UFUNCTION()
 		void ChooseLidar();
+	UFUNCTION()
+		void ChooseCamera();
 
 private:
 	ADroneController* DroneController = nullptr;

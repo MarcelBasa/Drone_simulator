@@ -14,6 +14,7 @@ class DRONE_SIMULATOR_API ADroneHUD : public AHUD
 public:
 	void SetPauseMenu();
 	void SetLidarMenu();
+	void SetCameraMenu();
 	void SetMenu();
 
 private:
@@ -29,4 +30,8 @@ private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> LidarMenuClass;
 	UUserWidget* LidarMenuComponent = nullptr;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UUserWidget> CameraMenuClass;
+	UUserWidget* CameraMenuComponent = nullptr;
 };

@@ -10,6 +10,7 @@ void UMenu::NativeConstruct()
 
 	QuitButton->OnClicked.AddDynamic(this, &ThisClass::Quit);
 	LidarButton->OnClicked.AddDynamic(this, &ThisClass::ChooseLidar);
+	CameraButton->OnClicked.AddDynamic(this, &ThisClass::ChooseCamera);
 
 	DroneController = Cast<ADroneController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (DroneController)
@@ -29,4 +30,10 @@ void UMenu::ChooseLidar()
 {
 	if (DroneController)
 		DroneController->HandleSetLidarMenu();
+}
+
+void UMenu::ChooseCamera()
+{
+	if (DroneController)
+		DroneController->HandleSetCameraMenu();
 }

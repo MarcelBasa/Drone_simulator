@@ -14,6 +14,7 @@ class DRONE_SIMULATOR_API ADroneController : public APlayerController
 public:
 	void HandleSetPauseMenu();
 	void HandleSetLidarMenu();
+	void HandleSetCameraMenu();
 	void HandleSetMenu();
 
 private:
