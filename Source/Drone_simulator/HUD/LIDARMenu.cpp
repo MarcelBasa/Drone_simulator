@@ -7,8 +7,8 @@
 #include <windows.h>
 #include <commdlg.h>
 #include "LidarPointCloudActor.h" 
-#include "Drone_simulator/Controllers/DroneController.h"
 #include "Drone_simulator/GameInstance/DroneGameInstance.h"
+#include "Drone_simulator/Controllers/DroneController.h"
 
 
 void ULIDARMenu::NativeConstruct()
@@ -17,14 +17,6 @@ void ULIDARMenu::NativeConstruct()
 
 	ChooseFileButton->OnClicked.AddDynamic(this, &ThisClass::ChooseFile);
 	RunMapButton->OnClicked.AddDynamic(this, &ThisClass::RunMap);
-	BackButton->OnClicked.AddDynamic(this, &ThisClass::Back);
-
-	DroneController = Cast<ADroneController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (DroneController)
-	{
-		DroneController->SetInputMode(FInputModeUIOnly());
-		DroneController->bShowMouseCursor = true;
-	}
 }
 
 void ULIDARMenu::ChooseFile()
@@ -78,12 +70,6 @@ void ULIDARMenu::RunMap()
 
 	FName mapPath = FName("D:/UE_5_projekty_D/Drone_simulator/Content/Maps/Szczecin_LIDAR");
 	UGameplayStatics::OpenLevel(GetWorld(), mapPath);
-}
-
-void ULIDARMenu::Back()
-{
-	if (DroneController)
-		DroneController->HandleSetMenu();
 }
 
 FString ULIDARMenu::OpenFileDialog()
