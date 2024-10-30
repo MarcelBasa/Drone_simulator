@@ -24,5 +24,6 @@ private:
 	UUserWidget* LoadingScreenComp;
 
 	void TimerFinish();
-
+	void SetLoadingScreen();
+	void SetMapParameters();
 };

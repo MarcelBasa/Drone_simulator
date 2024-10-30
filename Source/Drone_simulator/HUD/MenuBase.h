@@ -19,11 +19,10 @@ public:
 	UPROPERTY(meta = (BindWidget))
 		UButton* BackButton;
 
-		
 protected:
 	virtual void NativeConstruct() override;
 	UFUNCTION()
-		void Back();
+		virtual void Back();
 	ADroneController* DroneController = nullptr;
 
 };
