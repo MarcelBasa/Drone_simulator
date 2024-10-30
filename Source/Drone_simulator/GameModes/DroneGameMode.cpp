@@ -19,33 +19,8 @@ void ADroneGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (LoadingScreenClass)
-	{
-		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
-		if (PlayerController)
-		{
-			LoadingScreenComp = CreateWidget<UUserWidget>(PlayerController, LoadingScreenClass);
-			if (LoadingScreenComp)
-			{
-				LoadingScreenComp->AddToViewport();
-
-				FTimerHandle LoadingScreenTimer;
-				GetWorldTimerManager().SetTimer(LoadingScreenTimer, this, &ThisClass::TimerFinish, 6.f);
-			}	
-		}
-	}
-	
-	UDroneGameInstance* ADroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	if (ADroneGameInstance)
-	{
-		LoadLidarPointCloud(ADroneGameInstance->GetFilePath());
-	}
-}
-
-void ADroneGameMode::TimerFinish()
-{
-	if (LoadingScreenComp)
-		LoadingScreenComp->RemoveFromParent();
+	SetLoadingScreen();
+	SetMapParameters();
 }
 
 void ADroneGameMode::LoadLidarPointCloud(const FString& FilePath)
@@ -68,5 +43,44 @@ void ADroneGameMode::LoadLidarPointCloud(const FString& FilePath)
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s "), *FilePath);
+	}
+}
+
+void ADroneGameMode::SetLoadingScreen()
+{
+	if (LoadingScreenClass)
+	{
+		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+		if (PlayerController)
+		{
+			LoadingScreenComp = CreateWidget<UUserWidget>(PlayerController, LoadingScreenClass);
+			if (LoadingScreenComp)
+			{
+				LoadingScreenComp->AddToViewport();
+
+				FTimerHandle LoadingScreenTimer;
+				GetWorldTimerManager().SetTimer(LoadingScreenTimer, this, &ThisClass::TimerFinish, 6.f);
+			}
+		}
+	}
+}
+
+void ADroneGameMode::TimerFinish()
+{
+	if (LoadingScreenComp)
+		LoadingScreenComp->RemoveFromParent();
+
+}
+
+void ADroneGameMode::SetMapParameters()
+{
+	UDroneGameInstance* DroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (DroneGameInstance)
+	{
+		APawn *PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+		if (PlayerPawn)
+			PlayerPawn->SetActorLocation(FVector(0, 0, DroneGameInstance->GetDroneFlyHeight()));
+
+		LoadLidarPointCloud(DroneGameInstance->GetFilePath());
 	}
 }

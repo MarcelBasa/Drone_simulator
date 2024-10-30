@@ -13,11 +13,15 @@ class DRONE_SIMULATOR_API UDroneGameInstance : public UGameInstance
 
 private:
 	FString FilePath = "";
+	float DroneFlyHeight = 8800.0f;
 
 protected:
 	void Init();
 
 public:
-	inline void SetFilePath(FString& NewFilePath) { FilePath = NewFilePath; }
-	FString GetFilePath() const { return FilePath; }
+	inline void SetFilePath(FString& newFilePath) { FilePath = newFilePath; }
+	inline void SetDroneFlyHeight(float newHeight) { DroneFlyHeight = newHeight; }
+
+	inline FString GetFilePath() const { return FilePath; }
+	inline float GetDroneFlyHeight() const { return DroneFlyHeight; }
 };

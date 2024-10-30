@@ -17,6 +17,13 @@ void ULIDARMenu::NativeConstruct()
 
 	ChooseFileButton->OnClicked.AddDynamic(this, &ThisClass::ChooseFile);
 	RunMapButton->OnClicked.AddDynamic(this, &ThisClass::RunMap);
+
+	DroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (DroneGameInstance && DroneGameInstance->GetFilePath().IsEmpty() == false)
+	{
+		ChosenFileText->SetText(FText::FromString(DroneGameInstance->GetFilePath()));
+		ChosenFileText->SetColorAndOpacity(FLinearColor::Green);
+	}
 }
 
 void ULIDARMenu::ChooseFile()
@@ -33,7 +40,6 @@ void ULIDARMenu::ChooseFile()
 
 		if (SelectedFilePath.EndsWith(TEXT(".las")) || SelectedFilePath.EndsWith(TEXT(".laz")))
 		{
-			DroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 			if (DroneGameInstance)
 			{
 				DroneGameInstance->SetFilePath(SelectedFilePath);
@@ -56,9 +62,10 @@ void ULIDARMenu::ChooseFile()
 
 void ULIDARMenu::RunMap()
 {
-	DroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	if (!DroneGameInstance || DroneGameInstance->GetFilePath().IsEmpty())
 	{
+		ChosenFileText->SetText(FText::FromString(FString("Select map file")));
+		ChosenFileText->SetColorAndOpacity(FLinearColor::Red);
 		return;
 	}
 	

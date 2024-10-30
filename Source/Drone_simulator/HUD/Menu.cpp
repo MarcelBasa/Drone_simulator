@@ -8,19 +8,11 @@ void UMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	QuitButton->OnClicked.AddDynamic(this, &ThisClass::Quit);
 	LidarButton->OnClicked.AddDynamic(this, &ThisClass::ChooseLidar);
 	CameraButton->OnClicked.AddDynamic(this, &ThisClass::ChooseCamera);
-
-	DroneController = Cast<ADroneController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (DroneController)
-	{
-		DroneController->SetInputMode(FInputModeUIOnly());
-		DroneController->bShowMouseCursor = true;
-	}
 }
 
-void UMenu::Quit()
+void UMenu::Back()
 {
 	if (DroneController)
 		DroneController->ConsoleCommand("quit");
