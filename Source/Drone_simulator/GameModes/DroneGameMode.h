@@ -26,4 +26,5 @@ private:
 	void TimerFinish();
 	void SetLoadingScreen();
 	void SetMapParameters();
+
 };
