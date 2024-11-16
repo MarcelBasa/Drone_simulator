@@ -77,10 +77,6 @@ void ADroneGameMode::SetMapParameters()
 	UDroneGameInstance* DroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	if (DroneGameInstance)
 	{
-		APawn *PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-		if (PlayerPawn)
-			PlayerPawn->SetActorLocation(FVector(0, 0, DroneGameInstance->GetDroneFlyHeight()));
-
 		LoadLidarPointCloud(DroneGameInstance->GetFilePath());
 	}
 }
