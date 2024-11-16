@@ -7,6 +7,7 @@
 #include "LidarPointCloudActor.h" 
 #include "Blueprint/UserWidget.h"
 #include "Drone_simulator/GameInstance/DroneGameInstance.h"
+#include "Drone_simulator/Controllers/DroneController.h"
 
 
 ADroneGameMode::ADroneGameMode() 
@@ -18,6 +19,10 @@ ADroneGameMode::ADroneGameMode()
 void ADroneGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ADroneController* DroneController = Cast<ADroneController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (DroneController)
+		DroneController->HandleSetCameraMenu();
 
 	SetLoadingScreen();
 	SetMapParameters();

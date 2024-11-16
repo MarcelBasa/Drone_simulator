@@ -17,12 +17,12 @@ public:
 	UPROPERTY(meta = (BindWidget))
 		UCanvasPanel* Background;
 	UPROPERTY(meta = (BindWidget))
-		UButton* BackButton;
+		UButton* ExitButton;
 
 protected:
 	virtual void NativeConstruct() override;
 	UFUNCTION()
-		virtual void Back();
+		virtual void Exit();
 	ADroneController* DroneController = nullptr;
 
 };

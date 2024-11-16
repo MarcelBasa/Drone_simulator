@@ -23,11 +23,6 @@ void ADroneHUD::SetPauseMenu()
 
 void ADroneHUD::SetLidarMenu()
 {
-	if (MenuComponent)
-	{
-		MenuComponent->RemoveFromParent();
-		MenuComponent = nullptr;
-	}
 	if (CameraMenuComponent)
 	{
 		CameraMenuComponent->RemoveFromParent();
@@ -41,37 +36,12 @@ void ADroneHUD::SetLidarMenu()
 	}
 }
 
-void ADroneHUD::SetMenu()
-{
-	if (LidarMenuComponent) 
-	{
-		LidarMenuComponent->RemoveFromParent();
-		LidarMenuComponent = nullptr;
-	}
-	if (CameraMenuComponent)
-	{
-		CameraMenuComponent->RemoveFromParent();
-		CameraMenuComponent = nullptr;
-	}
-
-	if (MenuClass)
-	{
-		MenuComponent = CreateWidget<UUserWidget>(GetOwningPlayerController(), MenuClass);
-		MenuComponent->AddToViewport();
-	}
-}
-
 void ADroneHUD::SetCameraMenu()
 {
 	if (LidarMenuComponent)
 	{
 		LidarMenuComponent->RemoveFromParent();
 		LidarMenuComponent = nullptr;
-	}
-	if (MenuComponent)
-	{
-		MenuComponent->RemoveFromParent();
-		MenuComponent = nullptr;
 	}
 
 	if (CameraMenuClass)

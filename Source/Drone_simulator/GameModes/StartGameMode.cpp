@@ -9,5 +9,5 @@ void AStartGameMode::BeginPlay()
 
 	ADroneController* DroneController = Cast<ADroneController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (DroneController)
-		DroneController->HandleSetMenu();
+		DroneController->HandleSetLidarMenu();
 }
