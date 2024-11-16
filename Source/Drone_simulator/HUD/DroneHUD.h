@@ -10,28 +10,23 @@ UCLASS()
 class DRONE_SIMULATOR_API ADroneHUD : public AHUD
 {
 	GENERATED_BODY()
-	
+
 public:
 	void SetPauseMenu();
 	void SetLidarMenu();
 	void SetCameraMenu();
-	void SetMenu();
 
 private:
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<UUserWidget> PauseMenuClass;
+	TSubclassOf<UUserWidget> PauseMenuClass;
 	UUserWidget* PauseMenuComponent = nullptr;
 	bool bIsGamePaused = false;
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<UUserWidget> MenuClass;
-	UUserWidget* MenuComponent = nullptr;
-
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<UUserWidget> LidarMenuClass;
+	TSubclassOf<UUserWidget> LidarMenuClass;
 	UUserWidget* LidarMenuComponent = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<UUserWidget> CameraMenuClass;
+	TSubclassOf<UUserWidget> CameraMenuClass;
 	UUserWidget* CameraMenuComponent = nullptr;
 };

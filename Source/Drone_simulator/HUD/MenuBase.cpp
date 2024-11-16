@@ -8,7 +8,7 @@ void UMenuBase::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	BackButton->OnClicked.AddDynamic(this, &ThisClass::Back);
+	ExitButton->OnClicked.AddDynamic(this, &ThisClass::Exit);
 
 	DroneController = Cast<ADroneController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (DroneController)
@@ -18,8 +18,8 @@ void UMenuBase::NativeConstruct()
 	}
 }
 
-void UMenuBase::Back()
+void UMenuBase::Exit()
 {
 	if (DroneController)
-		DroneController->HandleSetMenu();
+		DroneController->ConsoleCommand("quit");
 }

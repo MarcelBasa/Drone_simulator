@@ -15,7 +15,6 @@ public:
 	void HandleSetPauseMenu();
 	void HandleSetLidarMenu();
 	void HandleSetCameraMenu();
-	void HandleSetMenu();
 
 private:
 	ADroneHUD* DroneHUD = nullptr;

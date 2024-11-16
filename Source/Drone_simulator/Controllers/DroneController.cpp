@@ -16,13 +16,6 @@ void ADroneController::HandleSetLidarMenu()
 		DroneHUD->SetLidarMenu();
 }
 
-void ADroneController::HandleSetMenu()
-{
-	DroneHUD = DroneHUD == nullptr ? Cast<ADroneHUD>(GetHUD()) : DroneHUD;
-	if (DroneHUD)
-		DroneHUD->SetMenu();
-}
-
 void ADroneController::HandleSetCameraMenu()
 {
 	DroneHUD = DroneHUD == nullptr ? Cast<ADroneHUD>(GetHUD()) : DroneHUD;

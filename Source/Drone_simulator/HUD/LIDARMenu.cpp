@@ -68,12 +68,6 @@ void ULIDARMenu::RunMap()
 		ChosenFileText->SetColorAndOpacity(FLinearColor::Red);
 		return;
 	}
-	
-	if (DroneController)
-	{
-		DroneController->SetInputMode(FInputModeGameOnly());
-		DroneController->bShowMouseCursor = false;
-	}
 
 	FName mapPath = FName("D:/UE_5_projekty_D/Drone_simulator/Content/Maps/Szczecin_LIDAR");
 	UGameplayStatics::OpenLevel(GetWorld(), mapPath);
