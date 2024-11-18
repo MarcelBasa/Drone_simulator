@@ -8,6 +8,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Drone_simulator/GameInstance/DroneGameInstance.h"
 #include "Drone_simulator/Controllers/DroneController.h"
+#include "Drone_simulator/Pawns/Drone.h"
 
 
 ADroneGameMode::ADroneGameMode() 
@@ -24,8 +25,8 @@ void ADroneGameMode::BeginPlay()
 	if (DroneController)
 		DroneController->HandleSetCameraMenu();
 
-	SetLoadingScreen();
-	SetMapParameters();
+	//SetLoadingScreen();
+	//SetMapParameters();
 }
 
 void ADroneGameMode::LoadLidarPointCloud(const FString& FilePath)
@@ -79,9 +80,34 @@ void ADroneGameMode::TimerFinish()
 
 void ADroneGameMode::SetMapParameters()
 {
-	UDroneGameInstance* DroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	DroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	if (DroneGameInstance)
-	{
 		LoadLidarPointCloud(DroneGameInstance->GetFilePath());
+}
+
+void ADroneGameMode::StartGame(FVector2D FirstPoint)
+{
+	if (PlayerPawnClass)
+	{
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		if (PlayerController)
+		{
+			DroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+			if(DroneGameInstance)
+			{
+				float DroneFlyHeight = DroneGameInstance->GetDroneFlyHeight();
+				FVector SpawnLocation(FirstPoint.X, FirstPoint.Y, DroneFlyHeight);
+				UE_LOG(LogTemp, Warning, TEXT("%s"), *SpawnLocation.ToString());
+				FRotator SpawnRotation(0.0f, 0.0f, 0.0f);
+
+				ADrone* SpawnedPawn = GetWorld()->SpawnActor<ADrone>(PlayerPawnClass, SpawnLocation, SpawnRotation);
+				if (SpawnedPawn)
+				{
+					PlayerController->Possess(SpawnedPawn);
+					if (DroneGameInstance)
+						SpawnedPawn->StartFly(DroneGameInstance->GetFlyPoints(), DroneFlyHeight, DroneGameInstance->GetDroneFlySpeed());
+				}
+			}
+		}
 	}
 }

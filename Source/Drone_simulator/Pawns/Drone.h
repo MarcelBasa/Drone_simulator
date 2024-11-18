@@ -35,6 +35,8 @@ public:
 	UFUNCTION()
 		void TimelineProgress(float Value);
 
+	void StartFly(TArray<FVector2D> FlyPoints, float FlyHeight, float FlySpeed);
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -61,6 +63,14 @@ private:
 	FTimeline CurveTimeline;
 	UPROPERTY(EditAnywhere)
 		UCurveFloat* CurveFloat;
+
+	int32 CurrentWaypointIndex = 0;
+
+	UPROPERTY(EditAnywhere, Category = "Flight Path")
+		float DroneSpeed = 3800.f;
+
+	UPROPERTY(EditAnywhere, Category = "Flight Path")
+		TArray<FVector> Waypoints;
 
 	ADroneController* DroneContoller = nullptr;
 	void PauseButtonClick();

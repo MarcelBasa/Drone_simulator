@@ -44,8 +44,6 @@ ADrone::ADrone()
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 }
 
-
-
 void ADrone::TimelineProgress(float Value)
 {
 	if (Camera)
@@ -79,6 +77,33 @@ void ADrone::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	CurveTimeline.TickTimeline(DeltaTime);
+	// SprawdŸ, czy s¹ punkty do odwiedzenia
+	if (Waypoints.Num() == 0 || CurrentWaypointIndex >= Waypoints.Num())
+	{
+		return; // Brak punktów lub dotarliœmy do koñca
+	}
+
+	// Obecna pozycja drona
+	FVector CurrentLocation = GetActorLocation();
+
+	// Cel (bie¿¹cy punkt w tablicy)
+	FVector TargetLocation = Waypoints[CurrentWaypointIndex];
+
+	// Oblicz kierunek ruchu
+	FVector Direction = (TargetLocation - CurrentLocation).GetSafeNormal();
+
+	// Oblicz now¹ pozycjê
+	FVector NewLocation = CurrentLocation + Direction * DroneSpeed * DeltaTime;
+
+	// Aktualizuj pozycjê drona
+	SetActorLocation(NewLocation);
+
+	// SprawdŸ, czy dron dotar³ wystarczaj¹co blisko celu
+	if (FVector::Dist(CurrentLocation, TargetLocation) < 10.f) // Tolerancja 10 jednostek
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Next point!"));
+		CurrentWaypointIndex++; // PrzejdŸ do nastêpnego punktu
+	}
 }
 
 void ADrone::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -146,4 +171,13 @@ void ADrone::PauseButtonClick()
 	DroneContoller = DroneContoller == nullptr ? Cast<ADroneController>(Controller) : DroneContoller;
 	if(DroneContoller)
 		DroneContoller->HandleSetPauseMenu();
+}
+
+void ADrone::StartFly(TArray<FVector2D> FlyPoints, float FlyHeight, float FlySpeed)
+{
+	DroneSpeed = FlySpeed;
+	for (int32 i = 0; i < FlyPoints.Num(); i++)
+	{
+		Waypoints.Add(FVector(FlyPoints[i].X, FlyPoints[i].Y, FlyHeight));
+	}
 }
