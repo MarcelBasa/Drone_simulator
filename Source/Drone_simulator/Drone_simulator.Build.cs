@@ -18,7 +18,9 @@ public class Drone_simulator : ModuleRules
 			"UMG",
 			"UnrealEd", 
 			"AssetTools",
-			"LidarPointCloudRuntime"
+			"LidarPointCloudRuntime",
+			"Slate", 
+			"SlateCore"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

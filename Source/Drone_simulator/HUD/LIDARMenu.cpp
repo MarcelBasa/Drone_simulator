@@ -15,8 +15,11 @@ void ULIDARMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	ChooseFileButton->OnClicked.AddDynamic(this, &ThisClass::ChooseFile);
-	RunMapButton->OnClicked.AddDynamic(this, &ThisClass::RunMap);
+	if(ChooseFileButton)
+		ChooseFileButton->OnClicked.AddDynamic(this, &ThisClass::ChooseFile);
+
+	if(RunMapButton)
+		RunMapButton->OnClicked.AddDynamic(this, &ThisClass::RunMap);
 
 	DroneGameInstance = Cast<UDroneGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	if (DroneGameInstance && DroneGameInstance->GetFilePath().IsEmpty() == false)
