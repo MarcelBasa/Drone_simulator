@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Drone_simulator/Controllers/DroneController.h"
 #include "Components/TimelineComponent.h"
+#include "Drone_simulator/GameModes/DroneGameMode.h"
 
 
 ADrone::ADrone()
@@ -42,6 +43,7 @@ ADrone::ADrone()
 	Camera->bUsePawnControlRotation = true;
 
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
+	MovementComponent->SetActive(false);
 }
 
 void ADrone::TimelineProgress(float Value)
@@ -77,32 +79,24 @@ void ADrone::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	CurveTimeline.TickTimeline(DeltaTime);
-	// SprawdŸ, czy s¹ punkty do odwiedzenia
+
 	if (Waypoints.Num() == 0 || CurrentWaypointIndex >= Waypoints.Num())
 	{
-		return; // Brak punktów lub dotarliœmy do koñca
+		ADroneGameMode* DroneGameMode = Cast<ADroneGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+		if (DroneGameMode)
+			DroneGameMode->EndGame();
+		UE_LOG(LogTemp, Warning, TEXT("FISNISH!"));
+		return;
 	}
-
-	// Obecna pozycja drona
 	FVector CurrentLocation = GetActorLocation();
-
-	// Cel (bie¿¹cy punkt w tablicy)
 	FVector TargetLocation = Waypoints[CurrentWaypointIndex];
-
-	// Oblicz kierunek ruchu
 	FVector Direction = (TargetLocation - CurrentLocation).GetSafeNormal();
-
-	// Oblicz now¹ pozycjê
 	FVector NewLocation = CurrentLocation + Direction * DroneSpeed * DeltaTime;
-
-	// Aktualizuj pozycjê drona
 	SetActorLocation(NewLocation);
 
-	// SprawdŸ, czy dron dotar³ wystarczaj¹co blisko celu
-	if (FVector::Dist(CurrentLocation, TargetLocation) < 10.f) // Tolerancja 10 jednostek
+	if (FVector::Dist(CurrentLocation, TargetLocation) < 10.f)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Next point!"));
-		CurrentWaypointIndex++; // PrzejdŸ do nastêpnego punktu
+		CurrentWaypointIndex++;
 	}
 }
 

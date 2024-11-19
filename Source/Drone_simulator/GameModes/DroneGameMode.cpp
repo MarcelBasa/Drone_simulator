@@ -25,8 +25,8 @@ void ADroneGameMode::BeginPlay()
 	if (DroneController)
 		DroneController->HandleSetCameraMenu();
 
-	//SetLoadingScreen();
-	//SetMapParameters();
+	SetLoadingScreen();
+	SetMapParameters();
 }
 
 void ADroneGameMode::LoadLidarPointCloud(const FString& FilePath)
@@ -110,4 +110,9 @@ void ADroneGameMode::StartGame(FVector2D FirstPoint)
 			}
 		}
 	}
+}
+
+void ADroneGameMode::EndGame()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), "D:/UE_5_projekty_D/Drone_simulator/Content/Maps/StartMap");
 }

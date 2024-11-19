@@ -16,6 +16,7 @@ public:
 	ADroneGameMode();
 	void LoadLidarPointCloud(const FString& FilePath);
 	void StartGame(FVector2D FirstPoint);
+	void EndGame();
 
 protected:
 	virtual void BeginPlay() override;    
