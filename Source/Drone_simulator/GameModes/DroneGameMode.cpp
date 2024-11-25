@@ -75,7 +75,6 @@ void ADroneGameMode::TimerFinish()
 {
 	if (LoadingScreenComp)
 		LoadingScreenComp->RemoveFromParent();
-
 }
 
 void ADroneGameMode::SetMapParameters()
@@ -97,7 +96,6 @@ void ADroneGameMode::StartGame(FVector2D FirstPoint)
 			{
 				float DroneFlyHeight = DroneGameInstance->GetDroneFlyHeight();
 				FVector SpawnLocation(FirstPoint.X, FirstPoint.Y, DroneFlyHeight);
-				UE_LOG(LogTemp, Warning, TEXT("%s"), *SpawnLocation.ToString());
 				FRotator SpawnRotation(0.0f, 0.0f, 0.0f);
 
 				ADrone* SpawnedPawn = GetWorld()->SpawnActor<ADrone>(PlayerPawnClass, SpawnLocation, SpawnRotation);
