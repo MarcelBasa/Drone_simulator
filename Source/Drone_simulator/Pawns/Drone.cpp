@@ -13,7 +13,7 @@
 ADrone::ADrone()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
+	
 	DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultRoot"));
 	SetRootComponent(DefaultRoot);
 
