@@ -39,30 +39,22 @@ void UCameraMenu::OnFlySpeedChanged(float NewValue)
 
 FReply UCameraMenu::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-    // Pobierz globaln¹ pozycjê kursora myszy
     FVector2D MousePosition = InMouseEvent.GetScreenSpacePosition();
 
     if (MapArea && MapArea->IsVisible())
     {
-        // Pobierz geometriê obszaru mapy (np. miasto)
         FGeometry MapGeometry = MapArea->GetCachedGeometry();
 
-        // SprawdŸ, czy klikniêcie jest wewn¹trz widocznego obszaru mapy
         if (MapGeometry.IsUnderLocation(MousePosition))
         {
-            // Przekszta³æ globalne wspó³rzêdne na lokalne (wzglêdem mapy)
             FVector2D LocalMousePosition = MapGeometry.AbsoluteToLocal(MousePosition);
-
-            // Pobierz wymiary mapy
             FVector2D MapSize = MapGeometry.GetLocalSize();
 
-            // Znormalizuj wspó³rzêdne (zakres od 0 do 1 w obrêbie mapy)
             FVector2D NormalizedPosition(
                 LocalMousePosition.X / MapSize.X,
                 LocalMousePosition.Y / MapSize.Y
             );
 
-            // Rzeczywiste wymiary mapy (np. w metrach lub innych jednostkach)
             FVector2D RealMapSize(53000.0f, 53000.0f); 
             FVector2D RealWorldPosition(
                 NormalizedPosition.X * RealMapSize.X,  

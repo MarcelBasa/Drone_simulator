@@ -114,3 +114,14 @@ void ADroneGameMode::EndGame()
 {
 	UGameplayStatics::OpenLevel(GetWorld(), "D:/UE_5_projekty_D/Drone_simulator/Content/Maps/StartMap");
 }
+
+
+void ADroneGameMode::StartRecording()
+{
+
+}
+
+void ADroneGameMode::StopRecording()
+{
+
+}

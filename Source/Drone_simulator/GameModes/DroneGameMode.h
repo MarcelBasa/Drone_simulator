@@ -33,4 +33,7 @@ private:
 	void SetLoadingScreen();
 	void SetMapParameters();
 
+	void StartRecording();
+	void StopRecording();
+
 };
