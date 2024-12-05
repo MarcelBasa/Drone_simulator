@@ -4,28 +4,28 @@ using UnrealBuildTool;
 
 public class Drone_simulator : ModuleRules
 {
-	public Drone_simulator(ReadOnlyTargetRules Target) : base(Target)
-	{
-		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
-		PublicDependencyModuleNames.AddRange(new string[] 
-		{ 
-			"Core", 
-			"CoreUObject", 
-			"Engine", 
-			"InputCore", 
-			"EnhancedInput",
-			"UMG",
-			"UnrealEd", 
-			"AssetTools",
-			"LidarPointCloudRuntime",
-			"Slate", 
-			"SlateCore"
+    public Drone_simulator(ReadOnlyTargetRules Target) : base(Target)
+    {
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+        PublicDependencyModuleNames.AddRange(new string[]
+        {
+            "Core",
+            "CoreUObject",
+            "Engine",
+            "InputCore",
+            "EnhancedInput",
+            "UMG",
+            "UnrealEd",
+            "AssetTools",
+            "LidarPointCloudRuntime",
+            "Slate",
+            "SlateCore"
         });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { });
+        PrivateDependencyModuleNames.AddRange(new string[] { });
 
-        // Dodanie warunku, aby dodaæ bibliotekê Comdlg32.lib dla platformy Windows
+        // Dodanie warunku, aby doda? bibliotek? Comdlg32.lib dla platformy Windows
         if (Target.Platform == UnrealTargetPlatform.Win64)
         {
             PublicAdditionalLibraries.Add("Comdlg32.lib");
