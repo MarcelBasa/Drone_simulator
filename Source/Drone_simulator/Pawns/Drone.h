@@ -12,6 +12,7 @@ class UFloatingPawnMovement;
 class USoundCue;
 class ADroneController;
 class UCurveFloat;
+//class UAutomatedLevelSequenceCapture;
 
 UCLASS()
 class DRONE_SIMULATOR_API ADrone : public APawn
@@ -46,6 +47,9 @@ protected:
 	void LookUp(float Value);
 	void Zoom(float Value);
 
+	//void StartMP4Recording();
+	//void StopMP4Recording();
+
 public:	
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -73,5 +77,7 @@ private:
 		TArray<FVector> Waypoints;
 
 	ADroneController* DroneContoller = nullptr;
+	//UAutomatedLevelSequenceCapture* CaptureInstance; // Wskaünik do nagrywania
+
 	void PauseButtonClick();
 };

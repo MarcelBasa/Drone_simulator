@@ -8,7 +8,8 @@
 #include "Drone_simulator/Controllers/DroneController.h"
 #include "Components/TimelineComponent.h"
 #include "Drone_simulator/GameModes/DroneGameMode.h"
-
+//#include "MovieSceneCapture/AutomatedLevelSequenceCapture.h"
+//#include "Misc/Paths.h"
 
 ADrone::ADrone()
 {
@@ -175,3 +176,29 @@ void ADrone::StartFly(TArray<FVector2D> FlyPoints, float FlyHeight, float FlySpe
 		Waypoints.Add(FVector(FlyPoints[i].X, FlyPoints[i].Y, FlyHeight));
 	}
 }
+
+/*void ADrone::StartMP4Recording()
+{
+	if (!CaptureInstance)
+	{
+		CaptureInstance = NewObject<UAutomatedLevelSequenceCapture>();
+		CaptureInstance->Settings.OutputDirectory.Path = FPaths::ProjectSavedDir() / TEXT("Recordings");
+		CaptureInstance->Settings.OutputFormat = TEXT("{world}");
+		CaptureInstance->Settings.MovieExtension = TEXT(".mp4");
+		CaptureInstance->Settings.bOverwriteExisting = true;
+		CaptureInstance->Settings.VideoCodec = TEXT("H.264");
+		CaptureInstance->Settings.bUseCompression = true;
+
+		CaptureInstance->Initialize(nullptr, nullptr);
+		CaptureInstance->StartCapturing();
+	}
+}
+
+void ADrone::StopMP4Recording()
+{
+	if (CaptureInstance && CaptureInstance->IsCapturing())
+	{
+		CaptureInstance->Finalize();
+		CaptureInstance = nullptr;
+	}
+}*/
