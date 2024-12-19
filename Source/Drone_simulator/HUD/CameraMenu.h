@@ -39,7 +39,14 @@ protected:
 private:
 	UDroneGameInstance* DroneGameInstance = nullptr;
 	UPROPERTY(Editanywhere)
-		TSubclassOf<UUserWidget> DotWidgetClass;	
+		TSubclassOf<UUserWidget> DotWidgetClass;
+	UPROPERTY(Editanywhere)
+		TSubclassOf<UUserWidget> FlyHeightWidgetClass;
 	UPROPERTY(Editanywhere)
 		float DotSize = 40;
+	int32 dotCount = 0;
+
+	void SetDotWidget(FVector2D mousePosition);
+	void SetDotHeightEditor(FVector2D mousePosition);
+
 };

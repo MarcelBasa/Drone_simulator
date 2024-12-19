@@ -12,9 +12,9 @@ class DRONE_SIMULATOR_API UDroneGameInstance : public UGameInstance
 
 private:
 	FString FilePath = "";
-	TArray<FVector2D> FlyPoints;
-	float DroneFlyHeight = 8800.0f;
-	float DroneFlySpeed = 600.0f;
+	TArray<FVector> FlyPoints;
+	float DroneFlyHeight = 10000.f;
+	float DroneFlySpeed = 600.f;
 
 protected:
 	void Init();
@@ -23,10 +23,13 @@ public:
 	inline void SetFilePath(FString& newFilePath) { FilePath = newFilePath; }
 	inline void SetDroneFlyHeight(float newHeight) { DroneFlyHeight = newHeight; }
 	inline void SetDroneFlySpeed(float newSpeed) { DroneFlySpeed = newSpeed; }
-	inline void AddPointFly(FVector2D newPoint) { FlyPoints.Add(newPoint); }
+	inline void AddPointFly(double X, double Y) { FlyPoints.Add(FVector(X, Y, DroneFlyHeight)); }
 
 	inline FString GetFilePath() const { return FilePath; }
 	inline float GetDroneFlyHeight() const { return DroneFlyHeight; }
 	inline float GetDroneFlySpeed() const { return DroneFlySpeed; }
-	inline TArray<FVector2D> GetFlyPoints() const { return FlyPoints; }
+	inline TArray<FVector> GetFlyPoints() const { return FlyPoints; }
+
+	void Reset();
+	FVector* GetFlyPoint(int32 index);
 };
