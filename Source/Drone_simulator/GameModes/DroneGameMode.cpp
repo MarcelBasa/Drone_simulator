@@ -84,7 +84,7 @@ void ADroneGameMode::SetMapParameters()
 		LoadLidarPointCloud(DroneGameInstance->GetFilePath());
 }
 
-void ADroneGameMode::StartGame(FVector2D FirstPoint)
+void ADroneGameMode::StartGame(FVector FirstPoint)
 {
 	if (PlayerPawnClass)
 	{
@@ -95,15 +95,13 @@ void ADroneGameMode::StartGame(FVector2D FirstPoint)
 			if(DroneGameInstance)
 			{
 				float DroneFlyHeight = DroneGameInstance->GetDroneFlyHeight();
-				FVector SpawnLocation(FirstPoint.X, FirstPoint.Y, DroneFlyHeight);
-				FRotator SpawnRotation(0.0f, 0.0f, 0.0f);
+				FRotator SpawnRotation(0.0f);
 
-				ADrone* SpawnedPawn = GetWorld()->SpawnActor<ADrone>(PlayerPawnClass, SpawnLocation, SpawnRotation);
+				ADrone* SpawnedPawn = GetWorld()->SpawnActor<ADrone>(PlayerPawnClass, FirstPoint, SpawnRotation);
 				if (SpawnedPawn)
 				{
 					PlayerController->Possess(SpawnedPawn);
-					if (DroneGameInstance)
-						SpawnedPawn->StartFly(DroneGameInstance->GetFlyPoints(), DroneFlyHeight, DroneGameInstance->GetDroneFlySpeed());
+					SpawnedPawn->StartFly(DroneGameInstance->GetFlyPoints(), DroneFlyHeight, DroneGameInstance->GetDroneFlySpeed());
 				}
 			}
 		}

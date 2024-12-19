@@ -73,6 +73,7 @@ void ADrone::BeginPlay()
 		TimeLineProgress.BindUFunction(this, FName("TimelineProgress"));
 		CurveTimeline.AddInterpFloat(CurveFloat, TimeLineProgress);
 	}
+	//Camera->SetWorldRotation(FRotator(0,0,0));
 }
 
 void ADrone::Tick(float DeltaTime)
@@ -107,8 +108,8 @@ void ADrone::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ThisClass::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ThisClass::MoveRight);
-	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ThisClass::Turn);
-	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ThisClass::LookUp);
+	//PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ThisClass::Turn);
+	//PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ThisClass::LookUp);
 	PlayerInputComponent->BindAxis(TEXT("Zoom"), this, &ThisClass::Zoom);
 	PlayerInputComponent->BindAction(TEXT("Pause"), IE_Pressed, this, &ThisClass::PauseButtonClick);
 }
@@ -168,12 +169,13 @@ void ADrone::PauseButtonClick()
 		DroneContoller->HandleSetPauseMenu();
 }
 
-void ADrone::StartFly(TArray<FVector2D> FlyPoints, float FlyHeight, float FlySpeed)
+void ADrone::StartFly(TArray<FVector> FlyPoints, float FlyHeight, float FlySpeed)
 {
 	DroneSpeed = FlySpeed;
+	Waypoints = FlyPoints;
 	for (int32 i = 0; i < FlyPoints.Num(); i++)
 	{
-		Waypoints.Add(FVector(FlyPoints[i].X, FlyPoints[i].Y, FlyHeight));
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *FlyPoints[i].ToString());
 	}
 }
 

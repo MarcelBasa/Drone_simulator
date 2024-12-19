@@ -36,7 +36,7 @@ public:
 	UFUNCTION()
 		void TimelineProgress(float Value);
 
-	void StartFly(TArray<FVector2D> FlyPoints, float FlyHeight, float FlySpeed);
+	void StartFly(TArray<FVector> FlyPoints, float FlyHeight, float FlySpeed);
 
 protected:
 	virtual void BeginPlay() override;

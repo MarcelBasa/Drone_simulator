@@ -15,7 +15,7 @@ class DRONE_SIMULATOR_API ADroneGameMode : public AGameMode
 public:
 	ADroneGameMode();
 	void LoadLidarPointCloud(const FString& FilePath);
-	void StartGame(FVector2D FirstPoint);
+	void StartGame(FVector FirstPoint);
 	void EndGame();
 
 protected:
